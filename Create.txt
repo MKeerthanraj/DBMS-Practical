@@ -1,0 +1,118 @@
+CREATE TABLE Physician (
+  EmployeeID INTEGER PRIMARY KEY NOT NULL,
+  Name TEXT NOT NULL,
+  Position TEXT NOT NULL,
+  SSN INTEGER NOT NULL
+); 
+
+CREATE TABLE Department (
+  DepartmentID INTEGER PRIMARY KEY NOT NULL,
+  Name TEXT NOT NULL,
+  Head INTEGER NOT NULL REFERENCES Physician(EmployeeID)
+);
+
+CREATE TABLE Affiliated_With (
+  Physician INTEGER NOT NULL REFERENCES Physician(EmployeeID),
+  Department INTEGER NOT NULL REFERENCES Department(DepartmentID),
+  PrimaryAffiliation BOOLEAN NOT NULL,
+  PRIMARY KEY(Physician, Department)
+);
+
+CREATE TABLE Proceduree (
+  Code INTEGER PRIMARY KEY NOT NULL,
+  Name TEXT NOT NULL,
+  Cost REAL NOT NULL
+);
+
+CREATE TABLE Trained_In (
+  Physician INTEGER NOT NULL REFERENCES Physician(EmployeeID),
+  Treatment INTEGER NOT NULL REFERENCES Proceduree(Code),
+  CertificationDate DATETIME NOT NULL,
+  CertificationExpires DATETIME NOT NULL,
+  PRIMARY KEY(Physician, Treatment)
+);
+
+CREATE TABLE Patient (
+  SSN INTEGER PRIMARY KEY NOT NULL,
+  Name TEXT NOT NULL,
+  Address TEXT NOT NULL,
+  Phone TEXT NOT NULL,
+  InsuranceID INTEGER NOT NULL,
+  PCP INTEGER NOT NULL REFERENCES Physician(EmployeeID)
+);
+
+CREATE TABLE Nurse (
+  EmployeeID INTEGER PRIMARY KEY NOT NULL,
+  Name TEXT NOT NULL,
+  Position TEXT NOT NULL,
+  Registered BOOLEAN NOT NULL,
+  SSN INTEGER NOT NULL
+);
+
+CREATE TABLE Appointment (
+  AppointmentID INTEGER PRIMARY KEY NOT NULL,
+  Patient INTEGER NOT NULL REFERENCES Patient(SSN),
+  PrepNurse INTEGER REFERENCES Nurse(EmployeeID),
+  Physician INTEGER NOT NULL REFERENCES Physician(EmployeeID),
+  Start DATETIME NOT NULL,
+  End DATETIME NOT NULL,
+  ExaminationRoom TEXT NOT NULL
+);
+
+CREATE TABLE Medication (
+  Code INTEGER PRIMARY KEY NOT NULL,
+  Name TEXT NOT NULL,
+  Brand TEXT NOT NULL,
+  Description TEXT NOT NULL
+);
+
+CREATE TABLE Prescribes (
+  Physician INTEGER NOT NULL REFERENCES Physician(EmployeeID),
+  Patient INTEGER NOT NULL REFERENCES Patient(SSN),
+  Medication INTEGER NOT NULL REFERENCES Medication(Code),
+  Date DATETIME NOT NULL,
+  Appointment INTEGER REFERENCES Appointment(AppointmentID),
+  Dose TEXT NOT NULL,
+  PRIMARY KEY(Physician, Patient, Medication, Date)
+);
+
+CREATE TABLE Block (
+  Floor INTEGER NOT NULL,
+  Code INTEGER NOT NULL,
+  PRIMARY KEY(Floor, Code)
+); 
+
+CREATE TABLE Room (
+  Number INTEGER PRIMARY KEY NOT NULL,
+  Type TEXT NOT NULL,
+  BlockFloor INTEGER NOT NULL REFERENCES block(Floor),
+  BlockCode INTEGER NOT NULL REFERENCES block(Code),
+  Unavailable BOOLEAN NOT NULL
+);
+
+CREATE TABLE On_Call (
+  Nurse INTEGER NOT NULL REFERENCES Nurse(EmployeeID),
+  BlockFloor INTEGER NOT NULL REFERENCES block(Floor),
+  BlockCode INTEGER NOT NULL REFERENCES block(Code),
+  Start DATETIME NOT NULL,
+  End DATETIME NOT NULL,
+  PRIMARY KEY(Nurse, BlockFloor, BlockCode, Start, End)
+);
+
+CREATE TABLE Stay (
+  StayID INTEGER PRIMARY KEY NOT NULL,
+  Patient INTEGER NOT NULL REFERENCES Patient(SSN),
+  Room INTEGER NOT NULL REFERENCES Room(Number),
+  Start DATETIME NOT NULL,
+  End DATETIME NOT NULL
+);
+
+CREATE TABLE Undergoes (
+  Patient INTEGER NOT NULL REFERENCES Patient(SSN),
+  Proceduree INTEGER NOT NULL REFERENCES Proceduree(Code),
+  Stay INTEGER NOT NULL REFERENCES Stay(StayID),
+  Date DATETIME NOT NULL,
+  Physician INTEGER NOT NULL REFERENCES Physician(EmployeeID),
+  AssistingNurse INTEGER REFERENCES Nurse(EmployeeID),
+  PRIMARY KEY(Patient, Proceduree, Stay, Date)
+);
