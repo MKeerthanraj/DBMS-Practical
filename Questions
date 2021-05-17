@@ -1,0 +1,31 @@
+1. Show all the department names along with their heads.
+
+2. Write a query in SQL to count the number of patients who taken appointment with at least one physician.
+
+3. Write a query in SQL to find the floor and block where the room number 123 belongs to.
+
+4. Write a query in SQL to count the number available rooms.
+
+5. Write a query in SQL to obtain the name of the physician and the departments they are affiliated with.
+
+6. Write a query in SQL to obtain the name of the physicians who are trained for a special treatement.
+
+7. Write a query in SQL to obtain the name of the physicians with department who are yet to be affiliated. 
+
+8.  Write a query in SQL to obtain the name of the physicians who are not a specialized physician. 
+
+9. Write a query in SQL to obtain the name of the patients with their physicians by whom they got their preliminary treatement.
+
+10. Write a query in SQL to find the name of the patients and the number of physicians they have taken appointment.
+
+11. Write a query in SQL to count number of unique patients who got an appointment for examination room C.
+
+12. Write a query in SQL to find the name of the patients and the number of the room where they have to go for their treatment.
+
+13.  Write a query in SQL to find the name of the nurses and the room scheduled, where they will assist the physicians.
+
+14. Write a query in SQL to find the name of the patients who taken the appointment on the 25th of April at 10 am, and also display their physician, assisting nurses and room no.
+
+15. Write a query in SQL to find the name of patients and their physicians who does not require any assistance of a nurse.
+
+16. Write a query in SQL to find the name of the patients, their treating physicians and medication.
